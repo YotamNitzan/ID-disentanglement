@@ -135,4 +135,3 @@ dependencies:
     - tensorflow-addons==0.6.0
     - tensorflow-gpu==2.0.0
     - tqdm==4.53.0
-prefix: /home/dcor/yotamnitzan/anaconda3/envs/id_disen
