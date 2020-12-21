@@ -1,7 +1,7 @@
 # Face Identity Disentanglement via Latent Space Mapping
 
 <p align="center">
-<img src="docs/teaser.png" width="400px"/>
+<img src="docs/imgs/teaser.png" width="400px"/>
 </p>
 
 
@@ -80,7 +80,7 @@ The functions are resolved using the name of the function.
 ### All possible combinations in dirs
 
 <p align="center">
-<img src="docs/table_results.jpg"/>
+<img src="docs/imgs/table_results.jpg"/>
 </p>
 
 **Input data: Two directories, one identity inputs and another for attribute inputs.** <br>
@@ -119,13 +119,13 @@ python test.py
 #### Interpolating attributes
 
 <p align="center">
-<img src="docs/interpolate_attr.jpg"/>
+<img src="docs/imgs/interpolate_attr.jpg"/>
 </p>
 
 #### Interpolating identity
 
 <p align="center">
-<img src="docs/interpolate_id.jpg"/>
+<img src="docs/imgs/interpolate_id.jpg"/>
 </p>
 
 **Input data: A directory with any number of subdirectories. In each subdir, there are three images.**

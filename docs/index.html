@@ -1,0 +1,167 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ID disentanglement</title>
+
+    <!-- CSS includes -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="mainpage.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <h1><span style="font-size:36px">Face Identity Disentanglement via Latent Space Mapping</span></h1>
+        <h1><span style="font-size:22px">SIGGRAPH ASIA 2020</span></h1>
+
+        <div class="authors">
+            <span style="font-size:18px"><a href="https://yotamnitzan.github.io/" target="new">Yotam Nitzan<sup>1</sup></a></span>
+            &nbsp;
+            <span style="font-size:18px"><a href="https://www.cs.tau.ac.il/~amberman/"
+                                            target="new">Amit Bermano<sup>1</sup></a></span>
+            &nbsp;
+            <span style="font-size:18px"><a href="http://yangyan.li/" target="new">Yangyan Li<sup>2</sup></a></span>
+            &nbsp;
+            <span style="font-size:18px"><a href="https://danielcohenor.com/"
+                                            target="new">Daniel Cohen-Or<sup>1</sup></a></span>
+            <br>
+            <span style="font-size:18px"><sup>1</sup>Tel-Aviv University &nbsp;&nbsp;&nbsp; <sup>2</sup>Alibaba Cloud Intelligence Business Group<br><br></span>
+        </div>
+    </div>
+
+    <div class="row" style="text-align:center;padding:0;margin:0">
+        <div class="container">
+            <img src="imgs/teaser.png" height="650px">
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-1 col-md-0 col-sm-0"></div>
+            <div class="col-lg-1 col-md-0 col-sm-0"></div>
+
+            <div class="col-lg-3 col-md-4 col-sm-4 text-center">
+                <div class="service-box mt-5 mx-auto">
+                    <a href="https://arxiv.org/abs/2005.07728" target="_blank">
+                        <i class="far fa-4x fa-file text-primary mb-3 "></i>
+                    </a>
+                    <h3 class="mb-3">Paper</h3>
+                </div>
+            </div>
+
+            <div class="col-lg-1 col-md-0 col-sm-0"></div>
+            <div class="col-lg-1 col-md-0 col-sm-0"></div>
+
+            <div class="col-lg-2 col-md-4 col-sm-6 text-center">
+                <div class="service-box mt-5 mx-auto">
+                    <a href="https://github.com/YotamNitzan/ID-disentanglement" target="_blank">
+                        <i class="fab fa-4x fa-github text-primary mb-3 "></i>
+                    </a>
+                    <h3 class="mb-3">Code</h3>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Abstract</h2>
+        Learning disentangled representations of data is a fundamental problem in
+        artificial intelligence. Specifically, disentangled latent representations allow
+        generative models to control and compose the disentangled factors in the
+        synthesis process. Current methods, however, require extensive supervision
+        and training, or instead, noticeably compromise quality.
+        In this paper, we present a method that learns how to represent data
+        in a disentangled way, with minimal supervision, manifested solely using
+        available pre-trained networks. Our key insight is to decouple the processes
+        of disentanglement and synthesis, by employing a leading pre-trained unconditional image generator, such as
+        StyleGAN. By learning to map into its
+        latent space, we leverage both its state-of-the-art quality, and its rich and
+        expressive latent space, without the burden of training it.
+        We demonstrate our approach on the complex and high dimensional
+        domain of human heads. We evaluate our method qualitatively and quantitatively, and exhibit its success with
+        de-identification operations and with
+        temporal identity coherency in image sequences. Through extensive experimentation, we show that our method
+        successfully disentangles identity
+        from other facial attributes, surpassing existing methods, even though they
+        require more training and supervision.
+    </div>
+
+    <div class="container">
+        <h2>motivation</h2>
+        learning disentangled representations and image synthesis are different tasks.
+        however, it is a common practice to solve both simultaneously.
+        this way, the image generator learns the semantics of the representations.
+        now it is able to take multiple representations from different sources and mix them to generate novel images.
+        but this comes at a price, one now needs to solve two difficult tasks simultaneously.
+        this often causes the need to devise dedicated architectures and even then, achieve sub-optimal visual quality.
+        <br><br>
+        we propose a different approach. unconditional generators have recently achieved amazing image quality.
+        we take advantage of this fact, and avoid solving this task ourselves. instead, we suggest to use a pretrained
+        generator, such as stylegan. but now, how can the generator, which is pretrained & unconditional, make sense of
+        the disentangled representations?
+        <br>
+        we suggest mapping the disentangled representations directly into the latent space of the generator.
+        the mapping produces in a single feed-forward a new, never before seen, latent code that corresponds to novel
+        images.
+
+        <div class="row" style="text-align:center;padding:0;margin:0">
+            <img src="imgs/architecture.jpg" height="512px">
+        </div>
+
+
+    </div>
+
+    <div class="container">
+        <h2>Composition Results</h2>
+
+        We demonstrate our method on the domain of human faces - specifically disentangling identity from all other
+        attributes.
+        <br>
+        In the following tables the identity is taken from the image on top and the attributes are taken from the
+        left most image.
+        In this figure, the inputs themselves are StyleGAN generated images.
+        <div class="row" style="text-align:center;padding:0;margin:0">
+            <img src="imgs/table_results.jpg" height="850px">
+        </div>
+        <div class="space"></div>
+
+        More results, but this time, the input images are real.
+        <div class="row" style="text-align:center;padding:0;margin:0">
+            <img src="imgs/ffhq_table_results.jpg" height="850px">
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Disentangled Interpolation</h2>
+
+        Thanks to our disentangled representations, we are able to interpolate only a single feature
+        (identity or attributes) in the generator's latent space.
+        This enables more control and opens the door for new disentangled editing capabilities.
+        <br><br>
+        <div class="row" style="text-align:center;padding:0;margin:0">
+            <img src="imgs/interpolate_attr.jpg" width="1024px">
+        </div>
+        <div class="space"></div>
+        <div class="row" style="text-align:center;padding:0;margin:0">
+            <img src="imgs/interpolate_id.jpg" width="1024px">
+        </div>
+
+    </div>
+
+    <div class="container">
+        <h2>Contact</h2>
+        <div>
+            yotamnitzan at gmail dot com
+        </div>
+    </div>
+
+    <div id="footer">
+    </div>
+
+
+</body>
+</html>
