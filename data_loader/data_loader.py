@@ -19,8 +19,8 @@ class DataLoader(object):
         self.ws_dataset = dataset.joinpath('ws')
         self.image_dataset = dataset.joinpath('images')
 
-        max_dir = max([int(x.name) for x in self.image_dataset.iterdir()])
-        self.max_ind = max([int(x.stem) for x in self.image_dataset.joinpath(str(max_dir)).iterdir()])
+        max_dir = max([x.name for x in self.image_dataset.iterdir()])
+        self.max_ind = max([int(x.stem) for x in self.image_dataset.joinpath(max_dir).iterdir()])
         self.train_max_ind = args.train_data_size
 
         if self.train_max_ind >= self.max_ind:
