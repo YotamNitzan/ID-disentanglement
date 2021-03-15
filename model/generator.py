@@ -39,7 +39,10 @@ class G(Model):
     def call(self, x1, x2):
         id_embedding = self.id_encoder(x1)
 
-        lnds = self.landmarks(x2)
+        if self.args.train:
+            lnds = self.landmarks(x2)
+        else:
+            lnds = None
         attr_input = x2
 
         attr_out = self.attr_encoder(attr_input)
