@@ -31,7 +31,7 @@ def main(args):
         max_exist = 0
 
     stylegan_G_path = args.pretrained_models_path.joinpath(f'stylegan_G_{args.resolution}x{args.resolution}.h5')
-    stylegan_G = StyleGAN_G(resolution=args.resolution)
+    stylegan_G = StyleGAN_G(resolution=args.resolution, truncation_psi=args.truncation)
     stylegan_G.load_weights(str(stylegan_G_path))
 
     num_samples = args.num_images
@@ -67,6 +67,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--resolution', type=int, choices=[256, 1024], default=256)
     parser.add_argument('--batch_size', type=int, default=50)
+    parser.add_argument('--truncation', type=float, default=0.7)
 
     parser.add_argument('--output_path', required=True)
     parser.add_argument('--pretrained_models_path', type=Path, required=True)
