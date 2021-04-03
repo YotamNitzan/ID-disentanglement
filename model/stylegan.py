@@ -377,7 +377,11 @@ def minibatch_stddev_layer(x, group_size=4, num_new_features=1):
         return tf.concat([x, y], axis=1)                        # [NCHW]  Append as new fmap.
 		
 def StyleGAN_G_mapping( latent_size=512, dlatent_size=512, mapping_layers=8, mapping_fmaps=512, mapping_lrmul=0.01,
-                        truncation_psi=1 ):
+                        truncation_psi=1, resolution=1024):
+
+    resolution_log2 = int(np.log2(resolution))
+    num_layers = resolution_log2 * 2 - 2
+
     model = Sequential(name='G_mapping')
     model.add( InputLayer(input_shape=[latent_size], name='G_mapping/latents_in') ) 
 
@@ -393,13 +397,13 @@ def StyleGAN_G_mapping( latent_size=512, dlatent_size=512, mapping_layers=8, map
         model.add( LeakyReLU(alpha=0.2, name=name+'/LeakyReLU') )
         
     # Broadcast.
-    model.add( Broadcast(name='G_mapping/Broadcast') )
+    model.add( Broadcast(name='G_mapping/Broadcast', dlatent_broadcast=num_layers) )
     
     # Output.
     model.add( Identity(name='G_mapping/dlatents_out') )
 
     # Apply truncation trick.
-    model.add( Truncation(name='Truncation', truncation_psi=1 ))
+    model.add( Truncation(name='Truncation', num_layers=num_layers, truncation_psi=truncation_psi ))
     
     return model
 
@@ -408,10 +412,9 @@ def StyleGAN_G_synthesis(dlatent_size=512, resolution=1024, is_const_noise=True)
     num_channels = 3
     resolution_log2 = int(np.log2(resolution))
     num_layers = resolution_log2 * 2 - 2
-    num_styles = num_layers
-    
+
     # Primary inputs.
-    dlatents_in = tf.keras.layers.Input(shape=[num_styles, dlatent_size], name='G_synthesis/dlatents_in')
+    dlatents_in = tf.keras.layers.Input(shape=[num_layers, dlatent_size], name='G_synthesis/dlatents_in')
     
     # Noise inputs.
     noise_inputs = []
@@ -469,7 +472,8 @@ class StyleGAN_G(Model):
     def __init__(self, resolution=1024, latent_size=512, dlatent_size=512, mapping_layers=8, mapping_fmaps=512,
                  mapping_lrmul=0.01, truncation_psi=1):
         super(StyleGAN_G, self).__init__()
-        self.model_mapping = StyleGAN_G_mapping(latent_size, dlatent_size, mapping_layers, mapping_fmaps, mapping_lrmul, truncation_psi)
+        self.model_mapping = StyleGAN_G_mapping(latent_size, dlatent_size, mapping_layers, mapping_fmaps,
+                                                mapping_lrmul, truncation_psi, resolution)
         self.model_synthesis = StyleGAN_G_synthesis(dlatent_size, resolution)
         print('Model created.')
         
